@@ -4,13 +4,18 @@
 
 class Configuration
 {
+    const BACKGROUND_PATH = '/backgrounds/';
+    const FONTS_PATH = '/fonts/';
+
 
     private $config;
 
     public function __construct($config = array())
     {
-        $bg_path = dirname(__FILE__) . '/backgrounds/';
-        $font_path = dirname(__FILE__) . '/fonts/';
+        $config = $this->sanitize($config);
+
+        $bg_path = $this->obtainUbication() . self::BACKGROUND_PATH;
+        $font_path = $this->obtainUbication() . self::FONTS_PATH;
 
         $defaults = array(
             'code' => '',
@@ -41,12 +46,27 @@ class Configuration
             'shadow_offset_y' => 1
         );
 
-        $this->config = $defaults;
-        if( is_array($config) ) {
-            $this->config = array_merge($defaults,$config);
+        $this->config = array_merge($defaults,$config);
+
+
+
+    }
+
+    private function sanitize($config)
+    {
+        $result = array();
+        if (is_array($config)){
+            $result = $config;
         }
 
+        return $result;
 
+
+    }
+
+    private function obtainUbication()
+    {
+        return dirname(__FILE__);
 
     }
 

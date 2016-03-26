@@ -46,8 +46,10 @@ class Test extends PHPUnit_Framework_TestCase
         );
 
         $asHash = $configuration->asHash();
-
         $this->assertEquals($defaults,$asHash);
+
+        $nullConfiguration = new Configuration(null);
+        $this->assertEquals($defaults,$nullConfiguration->asHash());
 
     }
 

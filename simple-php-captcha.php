@@ -1,11 +1,8 @@
 <?php
-//
-//  A simple PHP CAPTCHA script
-//
-//  Copyright 2011 by Cory LaViska for A Beautiful Site, LLC
-//
-//  See readme.md for usage, demo, and licensing info
-//
+
+
+include_once 'Configuration.php';
+
 function simple_php_captcha($config = array()) {
 
     // Check for GD library
@@ -13,43 +10,8 @@ function simple_php_captcha($config = array()) {
         throw new Exception('Required GD library is missing');
     }
 
-    $bg_path = dirname(__FILE__) . '/backgrounds/';
-    $font_path = dirname(__FILE__) . '/fonts/';
-
-    // Default values
-    $captcha_config = array(
-        'code' => '',
-        'min_length' => 5,
-        'max_length' => 5,
-        'backgrounds' => array(
-            $bg_path . '45-degree-fabric.png',
-            $bg_path . 'cloth-alike.png',
-            $bg_path . 'grey-sandbag.png',
-            $bg_path . 'kinda-jean.png',
-            $bg_path . 'polyester-lite.png',
-            $bg_path . 'stitched-wool.png',
-            $bg_path . 'white-carbon.png',
-            $bg_path . 'white-wave.png'
-        ),
-        'fonts' => array(
-            $font_path . 'times_new_yorker.ttf'
-        ),
-        'characters' => 'ABCDEFGHJKLMNPRSTUVWXYZabcdefghjkmnprstuvwxyz23456789',
-        'min_font_size' => 28,
-        'max_font_size' => 28,
-        'color' => '#666',
-        'angle_min' => 0,
-        'angle_max' => 10,
-        'shadow' => true,
-        'shadow_color' => '#fff',
-        'shadow_offset_x' => -1,
-        'shadow_offset_y' => 1
-    );
-
-    // Overwrite defaults with custom config values
-    if( is_array($config) ) {
-        foreach( $config as $key => $value ) $captcha_config[$key] = $value;
-    }
+    $configuration = new Configuration($config);
+    $captcha_config = $configuration->asHash();
 
     // Restrict certain values
     if( $captcha_config['min_length'] < 1 ) $captcha_config['min_length'] = 1;
