@@ -7,6 +7,7 @@ class Configuration
     const BACKGROUND_PATH = '/backgrounds/';
     const FONTS_PATH = '/fonts/';
 
+    const MIN_LENGTH_KEY = 'min_length';
 
     private $config;
 
@@ -19,7 +20,7 @@ class Configuration
 
         $defaults = array(
             'code' => '',
-            'min_length' => 5,
+            self::MIN_LENGTH_KEY => 5,
             'max_length' => 5,
             'backgrounds' => array(
                 $bg_path . '45-degree-fabric.png',
@@ -73,6 +74,12 @@ class Configuration
     public function asHash()
     {
         return $this->config;
+    }
+
+
+    public function obtainMinLength()
+    {
+        return $this->config[self::MIN_LENGTH_KEY];
     }
 
 }
