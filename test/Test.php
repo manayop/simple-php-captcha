@@ -51,6 +51,16 @@ class Test extends PHPUnit_Framework_TestCase
         $nullConfiguration = new Configuration(null);
         $this->assertEquals($defaults,$nullConfiguration->asHash());
 
+        $notNullConfiguration = new Configuration(array(
+            min_font_size => 10,
+            max_font_size => 11
+        ));
+
+        $this->assertEquals($notNullConfiguration->asHash()['min_font_size'],10);
+        $this->assertEquals($notNullConfiguration->asHash()['max_font_size'],11);
+
+
+
     }
 
 }
