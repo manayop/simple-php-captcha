@@ -2,6 +2,7 @@
 
 
 include_once 'Configuration.php';
+include_once 'CaptchaGenerator.php';
 
 function simple_php_captcha($config = array()) {
 
@@ -11,17 +12,11 @@ function simple_php_captcha($config = array()) {
     }
 
     $configuration = new Configuration($config);
-    $captcha_config = $configuration->asHash();
 
+    $captchaGenerator = new CaptchaGenerator($configuration);
+    $captchaGenerator->generateCode();
+    $captcha_config = $captchaGenerator->getConfiguration()->asHash();
 
-    // Generate CAPTCHA code if not set by user
-    if( empty($captcha_config['code']) ) {
-        $captcha_config['code'] = '';
-        $length = mt_rand($captcha_config['min_length'], $captcha_config['max_length']);
-        while( strlen($captcha_config['code']) < $length ) {
-            $captcha_config['code'] .= substr($captcha_config['characters'], mt_rand() % (strlen($captcha_config['characters'])), 1);
-        }
-    }
 
     // Generate HTML for image src
     if ( strpos($_SERVER['SCRIPT_FILENAME'], $_SERVER['DOCUMENT_ROOT']) ) {
