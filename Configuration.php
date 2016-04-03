@@ -9,6 +9,11 @@ class Configuration
 
     const MIN_LENGTH_KEY = 'min_length';
 
+    const MIN_LENGTH_LIMIT = 1;
+    const ANGLE_MIN_LIMIT = 0;
+    const ANGLE_MAX_LIMIT = 10;
+    const MIN_FONT_SIZE_LIMIT = 10;
+
     private $config;
 
     public function __construct($config = array())
@@ -71,11 +76,11 @@ class Configuration
     private function sanitizeLimits($config)
     {
         $result = $config;
-        if( $result['min_length'] < 1 ) $result['min_length'] = 1;
-        if( $result['angle_min'] < 0 ) $result['angle_min'] = 0;
-        if( $result['angle_max'] > 10 ) $result['angle_max'] = 10;
+        if( $result['min_length'] < self::MIN_LENGTH_LIMIT ) $result['min_length'] = self::MIN_LENGTH_LIMIT;
+        if( $result['angle_min'] < self::ANGLE_MIN_LIMIT ) $result['angle_min'] = self::ANGLE_MIN_LIMIT;
+        if( $result['angle_max'] > self::ANGLE_MAX_LIMIT ) $result['angle_max'] = self::ANGLE_MAX_LIMIT;
         if( $result['angle_max'] < $result['angle_min'] ) $result['angle_max'] = $result['angle_min'];
-        if( $result['min_font_size'] < 10 ) $result['min_font_size'] = 10;
+        if( $result['min_font_size'] < self::MIN_FONT_SIZE_LIMIT ) $result['min_font_size'] = self::MIN_FONT_SIZE_LIMIT;
         if( $result['max_font_size'] < $result['min_font_size'] ) $result['max_font_size'] = $result['min_font_size'];
 
         return $result;
