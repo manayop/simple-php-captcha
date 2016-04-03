@@ -34,4 +34,21 @@ class CaptchaGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($configuration,$generator->getConfiguration());
     }
 
+    public function testCodeGeneration()
+    {
+        $generatorWithoutInitialCode = new CaptchaGenerator(new Configuration());
+
+        $this->assertEmpty($generatorWithoutInitialCode->getConfiguration()->asHash()['code']);
+
+        $generatorWithoutInitialCode->generateCode();
+        $this->assertNotEmpty($generatorWithoutInitialCode->getConfiguration()->asHash()['code']);
+        $this->assertInternalType('string',$generatorWithoutInitialCode->getConfiguration()->asHash()['code']);
+
+        $generatorWithInitialCode = new CaptchaGenerator(new Configuration(array('code' => '1234')));
+        $generatorWithInitialCode->generateCode();
+        $this->assertEquals('1234',$generatorWithInitialCode->getConfiguration()->asHash()['code']);
+
+
+    }
+
 }
