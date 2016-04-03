@@ -49,6 +49,7 @@ class Configuration
 
         $this->config = array_merge($defaults,$config);
 
+        $this->config = $this->sanitizeLimits($this->config);
 
 
     }
@@ -60,9 +61,24 @@ class Configuration
             $result = $config;
         }
 
+
+
         return $result;
 
 
+    }
+
+    private function sanitizeLimits($config)
+    {
+        $result = $config;
+        if( $result['min_length'] < 1 ) $result['min_length'] = 1;
+        if( $result['angle_min'] < 0 ) $result['angle_min'] = 0;
+        if( $result['angle_max'] > 10 ) $result['angle_max'] = 10;
+        if( $result['angle_max'] < $result['angle_min'] ) $result['angle_max'] = $result['angle_min'];
+        if( $result['min_font_size'] < 10 ) $result['min_font_size'] = 10;
+        if( $result['max_font_size'] < $result['min_font_size'] ) $result['max_font_size'] = $result['min_font_size'];
+
+        return $result;
     }
 
     private function obtainUbication()

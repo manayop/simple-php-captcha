@@ -75,5 +75,33 @@ class Test extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testSanitizeLimits()
+    {
+        $maxMinLimitsConfiguration = new Configuration(array(
+            'min_length' => 0,
+            'angle_min' => -1,
+            'angle_max' => 11,
+            'min_font_size' => 9
+        ));
+
+        $this->assertEquals($maxMinLimitsConfiguration->asHash()['min_length'],1);
+
+        $this->assertEquals($maxMinLimitsConfiguration->asHash()['angle_min'],0);
+        $this->assertEquals($maxMinLimitsConfiguration->asHash()['angle_max'],10);
+        $this->assertEquals($maxMinLimitsConfiguration->asHash()['min_font_size'],10);
+
+        $comparisonLimitsConfiguration = new Configuration(array(
+            'angle_min' => 6,
+            'angle_max' => 5,
+            'min_font_size' => 9,
+            'max_font_size' => 8
+        ));
+
+        $this->assertEquals($comparisonLimitsConfiguration->asHash()['angle_min'],$comparisonLimitsConfiguration->asHash()['angle_max']);
+        $this->assertEquals($comparisonLimitsConfiguration->asHash()['min_font_size'],$comparisonLimitsConfiguration->asHash()['max_font_size']);
+
+
+    }
+
 
 }
