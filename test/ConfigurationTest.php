@@ -76,6 +76,17 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testSettingValue()
+    {
+        $configuration = new Configuration();
+
+        $configuration->setValue('code','1234');
+        $this->assertEquals('1234',$configuration->obtainValue('code'));
+
+        $configuration->setValue('code','aaaa');
+        $this->assertEquals('aaaa',$configuration->obtainValue('code'));
+
+    }
     public function testSanitizeLimits()
     {
         $maxMinLimitsConfiguration = new Configuration(array(

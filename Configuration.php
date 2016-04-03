@@ -95,9 +95,13 @@ class Configuration
     }
 
 
-    public function obtainValue($value)
+    public function obtainValue($key)
     {
-        return $this->config[$value];
+        return $this->config[$key];
     }
 
+    public function setValue($key,$value)
+    {
+        $this->config[$key] = $value;
+    }
 }
