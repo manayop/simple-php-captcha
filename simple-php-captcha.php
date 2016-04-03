@@ -13,13 +13,6 @@ function simple_php_captcha($config = array()) {
     $configuration = new Configuration($config);
     $captcha_config = $configuration->asHash();
 
-    // Restrict certain values
-    if( $captcha_config['min_length'] < 1 ) $captcha_config['min_length'] = 1;
-    if( $captcha_config['angle_min'] < 0 ) $captcha_config['angle_min'] = 0;
-    if( $captcha_config['angle_max'] > 10 ) $captcha_config['angle_max'] = 10;
-    if( $captcha_config['angle_max'] < $captcha_config['angle_min'] ) $captcha_config['angle_max'] = $captcha_config['angle_min'];
-    if( $captcha_config['min_font_size'] < 10 ) $captcha_config['min_font_size'] = 10;
-    if( $captcha_config['max_font_size'] < $captcha_config['min_font_size'] ) $captcha_config['max_font_size'] = $captcha_config['min_font_size'];
 
     // Generate CAPTCHA code if not set by user
     if( empty($captcha_config['code']) ) {
