@@ -34,6 +34,16 @@ class CaptchaGenerator
         }
     }
 
+
+    public function generateHTMLImageSource($ubication)
+    {
+        $image_src = $ubication .  '?_CAPTCHA&amp;t=' . urlencode(microtime());
+        $image_src = '/' . ltrim(preg_replace('/\\\\/', '/', $image_src), '/');
+
+        return $image_src;
+    }
+
+
     public function getConfiguration()
     {
         return $this->configuration;

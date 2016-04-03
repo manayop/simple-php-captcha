@@ -3,6 +3,7 @@
 
 include_once 'Configuration.php';
 include_once 'CaptchaGenerator.php';
+include_once 'UbicationHandler.php';
 
 function simple_php_captcha($config = array()) {
 
@@ -16,19 +17,15 @@ function simple_php_captcha($config = array()) {
     $captchaGenerator = new CaptchaGenerator($configuration);
     $captchaGenerator->generateCode();
     $captcha_config = $captchaGenerator->getConfiguration()->asHash();
-
-
-    // Generate HTML for image src
-    if ( strpos($_SERVER['SCRIPT_FILENAME'], $_SERVER['DOCUMENT_ROOT']) ) {
-        $image_src = substr(__FILE__, strlen( realpath($_SERVER['DOCUMENT_ROOT']) )) . '?_CAPTCHA&amp;t=' . urlencode(microtime());
-        $image_src = '/' . ltrim(preg_replace('/\\\\/', '/', $image_src), '/');
-    } else {
-        $_SERVER['WEB_ROOT'] = str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['SCRIPT_FILENAME']);
-        $image_src = substr(__FILE__, strlen( realpath($_SERVER['WEB_ROOT']) )) . '?_CAPTCHA&amp;t=' . urlencode(microtime());
-        $image_src = '/' . ltrim(preg_replace('/\\\\/', '/', $image_src), '/');
-    }
-
     $_SESSION['_CAPTCHA']['config'] = serialize($captcha_config);
+
+
+    $ubicationHandler = new UbicationHandler();
+    if ( !$ubicationHandler->isActualScriptInDocumentPath() ) {
+        $image_src = $captchaGenerator->generateHTMLImageSource($ubicationHandler->obtainUbication(__FILE__,$ubicationHandler->obtainDocumentRoot()));
+    } else {
+        $image_src = $captchaGenerator->generateHTMLImageSource($ubicationHandler->obtainUbication(__FILE__,$ubicationHandler->obtainActualScriptPath()));
+    }
 
     return array(
         'code' => $captcha_config['code'],
