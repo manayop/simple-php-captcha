@@ -2,7 +2,7 @@
 
 include_once 'Configuration.php';
 
-class Test extends PHPUnit_Framework_TestCase
+class ConfigurationTest extends PHPUnit_Framework_TestCase
 {
 
     private $defaults = array(
