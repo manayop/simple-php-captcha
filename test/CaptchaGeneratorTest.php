@@ -11,5 +11,9 @@ class CaptchaGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('CaptchaGenerator',new CaptchaGenerator());
     }
 
+    public function testConfiguration()
+    {
+
+    }
 
 }

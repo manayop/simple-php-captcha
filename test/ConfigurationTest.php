@@ -67,11 +67,12 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
 
     }
 
-    public function testObtainMinLength()
+    public function testObtainValue()
     {
         $configuration = new Configuration();
 
-        $this->assertEquals(5,$configuration->obtainMinLength());
+        $this->assertEquals(5,$configuration->obtainValue('min_length'));
+        $this->assertEquals('#666',$configuration->obtainValue('color'));
 
     }
 

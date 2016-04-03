@@ -25,7 +25,7 @@ class Configuration
 
         $defaults = array(
             'code' => '',
-            self::MIN_LENGTH_KEY => 5,
+            'min_length' => 5,
             'max_length' => 5,
             'backgrounds' => array(
                 $bg_path . '45-degree-fabric.png',
@@ -95,9 +95,9 @@ class Configuration
     }
 
 
-    public function obtainMinLength()
+    public function obtainValue($value)
     {
-        return $this->config[self::MIN_LENGTH_KEY];
+        return $this->config[$value];
     }
 
 }
