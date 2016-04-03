@@ -61,14 +61,11 @@ class Configuration
 
     private function sanitize($config)
     {
-        $result = array();
-        if (is_array($config)){
-            $result = $config;
+        if (!is_array($config)){
+            return array();
         }
 
-
-
-        return $result;
+        return $config;
 
 
     }
