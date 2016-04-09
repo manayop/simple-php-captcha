@@ -104,4 +104,11 @@ class Configuration
     {
         $this->config[$key] = $value;
     }
+
+    public function obtainRandomBackground()
+    {
+        $count = count($this->config['backgrounds']);
+        return $this->config['backgrounds'][mt_rand(0, $count -1)];
+
+    }
 }

@@ -62,11 +62,12 @@ if( isset($_GET['_CAPTCHA']) ) {
 
     $captcha_config = unserialize($_SESSION['_CAPTCHA']['config']);
     if( !$captcha_config ) exit();
+    $configuration = new Configuration($captcha_config);
 
     unset($_SESSION['_CAPTCHA']);
 
     // Pick random background, get info, and start captcha
-    $background = $captcha_config['backgrounds'][mt_rand(0, count($captcha_config['backgrounds']) -1)];
+    $background = $configuration->obtainRandomBackground();
     list($bg_width, $bg_height, $bg_type, $bg_attr) = getimagesize($background);
 
     $captcha = imagecreatefrompng($background);

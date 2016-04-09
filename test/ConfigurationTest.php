@@ -115,5 +115,14 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testPickRandomBackground()
+    {
+        $configuration = new Configuration();
+
+        $randomBackground = $configuration->obtainRandomBackground();
+
+        $this->assertContains($randomBackground,$configuration->obtainValue('backgrounds'));
+    }
+
 
 }
