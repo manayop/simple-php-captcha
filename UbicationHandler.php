@@ -5,7 +5,7 @@ class UbicationHandler
 {
     public function isActualScriptInDocumentPath()
     {
-        return strpos(!$_SERVER['SCRIPT_FILENAME'], $_SERVER['DOCUMENT_ROOT']);
+        return strpos($_SERVER['SCRIPT_FILENAME'], $_SERVER['DOCUMENT_ROOT']);
     }
 
     public function obtainActualScriptPath()

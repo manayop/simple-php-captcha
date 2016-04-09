@@ -21,7 +21,7 @@ function simple_php_captcha($config = array()) {
 
 
     $ubicationHandler = new UbicationHandler();
-    if ( !$ubicationHandler->isActualScriptInDocumentPath() ) {
+    if ( $ubicationHandler->isActualScriptInDocumentPath() ) {
         $image_src = $captchaGenerator->generateHTMLImageSource($ubicationHandler->obtainUbication(__FILE__,$ubicationHandler->obtainDocumentRoot()));
     } else {
         $image_src = $captchaGenerator->generateHTMLImageSource($ubicationHandler->obtainUbication(__FILE__,$ubicationHandler->obtainActualScriptPath()));
