@@ -79,9 +79,6 @@ if( isset($_GET['_CAPTCHA']) ) {
     $image->generateAngle($configuration->obtainValue('angle_min'),$configuration->obtainValue('angle_max'));
     $captcha = $image->getResource();
 
-    // Verify font file exists
-    if( !file_exists($font) ) throw new Exception('Font file not found: ' . $font);
-
     //Set the font size.
     $font_size = mt_rand($captcha_config['min_font_size'], $captcha_config['max_font_size']);
     $text_box_size = imagettfbbox($font_size, $image->getAngle(), $font, $captcha_config['code']);

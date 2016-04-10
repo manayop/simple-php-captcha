@@ -115,6 +115,15 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
 
     }
 
+    /**
+     * @expectedException FileNotExistsException
+     */
+    public function testCheckFilesExistence()
+    {
+        $configuration = new Configuration(array('backgrounds' => array('aaa'),'fonts' => array('bbb')));
+
+    }
+
     public function testPickRandomBackground()
     {
         $configuration = new Configuration();

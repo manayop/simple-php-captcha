@@ -1,6 +1,6 @@
 <?php
 
-
+include_once 'FileNotExistsException.php';
 
 class Configuration
 {
@@ -55,6 +55,7 @@ class Configuration
         $this->config = array_merge($defaults,$config);
 
         $this->config = $this->sanitizeLimits($this->config);
+        $this->checkFilesExistence();
 
 
     }
@@ -81,6 +82,17 @@ class Configuration
         if( $result['max_font_size'] < $result['min_font_size'] ) $result['max_font_size'] = $result['min_font_size'];
 
         return $result;
+    }
+
+    private function checkFilesExistence()
+    {
+        $files = array_merge($this->config['backgrounds'],$this->config['fonts']);
+        foreach($files as $file){
+            if (!file_exists($file)){
+                throw new FileNotExistsException($file);
+            }
+        }
+
     }
 
     private function obtainUbication()
