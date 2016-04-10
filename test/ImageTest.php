@@ -122,20 +122,21 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $background = $configuration->obtainValue('backgrounds')[0];
         $font = $configuration->obtainValue('fonts')[0];
 
-        $oneBackgroundConfiguration = new Configuration(
+        $oneBackgroundAndFontConfiguration = new Configuration(
             array(
                 'backgrounds' => array($background),
+                'fonts' => array($font),
                 'code' => $code
             )
         );
-        $image = new Image($oneBackgroundConfiguration);
+        $image = new Image($oneBackgroundAndFontConfiguration);
 
 
         $image->create();
         $imageProperties = new ImageProperties();
         list($bg_width, $bg_height) = $imageProperties->getImageSize($background);
 
-        $image->generateTextPosition($font);
+        $image->generateTextPosition();
         $x = $image->getTextXPosition();
         $y = $image->getTextYPosition();
 

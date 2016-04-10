@@ -14,6 +14,7 @@ class Image
 
     private $imageWidth;
     private $imageHeight;
+    private $font;
 
     public function __construct($configuration)
     {
@@ -84,6 +85,8 @@ class Image
         $imageProperties = new ImageProperties();
         list($this->imageWidth, $this->imageHeight) = $imageProperties->getImageSize($source);
 
+        $this->font = $this->configuration->obtainRandomFont();
+
         $this->resource = imagecreatefrompng($source);
     }
 
@@ -114,10 +117,10 @@ class Image
         $this->fontSize = mt_rand($sizeMin,$sizeMax);
     }
 
-    public function generateTextPosition($font)
+    public function generateTextPosition()
     {
         $code = $this->configuration->obtainValue('code');
-        $text_box_size = imagettfbbox($this->fontSize, $this->angle, $font, $code);
+        $text_box_size = imagettfbbox($this->fontSize, $this->angle, $this->font, $code);
 
         $box_width = abs($text_box_size[6] - $text_box_size[2]);
         $box_height = abs($text_box_size[5] - $text_box_size[1]);
@@ -155,20 +158,20 @@ class Image
 
     }
 
-    public function writeText($textXPosition,$textYPosition,$color,$font)
+    public function writeText($textXPosition,$textYPosition,$color)
     {
         $code = $this->configuration->obtainValue('code');
-        imagettftext($this->resource, $this->fontSize, $this->angle, $textXPosition, $textYPosition, $color, $font, $code);
+        imagettftext($this->resource, $this->fontSize, $this->angle, $textXPosition, $textYPosition, $color, $this->font, $code);
 
     }
 
-    public function writeBackgroundText($textXPosition,$textYPosition,$color,$font)
+    public function writeBackgroundText($textXPosition,$textYPosition,$color)
     {
         $backgroundXOffset = $this->configuration->obtainValue('shadow_offset_x');
         $backgroundYOffset = $this->configuration->obtainValue('shadow_offset_y');
         $code = $this->configuration->obtainValue('code');
 
-        imagettftext($this->resource, $this->fontSize, $this->angle, $textXPosition + $backgroundXOffset, $textYPosition + $backgroundYOffset, $color, $font, $code);
+        imagettftext($this->resource, $this->fontSize, $this->angle, $textXPosition + $backgroundXOffset, $textYPosition + $backgroundYOffset, $color, $this->font, $code);
 
     }
 

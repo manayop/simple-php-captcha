@@ -47,28 +47,25 @@ if( isset($_GET['_CAPTCHA']) ) {
 
     unset($_SESSION['_CAPTCHA']);
 
-    $font = $configuration->obtainRandomFont();
 
     $image = new Image($configuration);
     $image->create();
     $image->colorAllocate();
     $image->generateAngle();
     $image->generateFontSize();
-    $image->generateTextPosition($font);
+    $image->generateTextPosition();
     if( $configuration->obtainValue('shadow') ){
         $image->shadowColorAllocate();
         $image->writeBackgroundText(
             $image->getTextXPosition(),
             $image->getTextYPosition(),
-            $image->getShadowColor(),
-            $font
+            $image->getShadowColor()
         );
     }
     $image->writeText(
         $image->getTextXPosition(),
         $image->getTextYPosition(),
-        $image->getColor(),
-        $font
+        $image->getColor()
     );
 
     header("Content-type: image/png");
