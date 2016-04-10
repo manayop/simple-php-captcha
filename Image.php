@@ -158,22 +158,21 @@ class Image
 
     }
 
-    public function writeText($textXPosition,$textYPosition,$color)
+    public function writeText()
     {
         $code = $this->configuration->obtainValue('code');
-        imagettftext($this->resource, $this->fontSize, $this->angle, $textXPosition, $textYPosition, $color, $this->font, $code);
+
+        if ($this->configuration->obtainValue('shadow')){
+            $backgroundXPosition = $this->textXPosition + $this->configuration->obtainValue('shadow_offset_x');
+            $backgroundYPosition = $this->textYPosition + $this->configuration->obtainValue('shadow_offset_y');
+            imagettftext($this->resource, $this->fontSize, $this->angle, $backgroundXPosition, $backgroundYPosition, $this->shadowColor, $this->font, $code);
+
+        }
+
+        imagettftext($this->resource, $this->fontSize, $this->angle, $this->textXPosition, $this->textYPosition, $this->color, $this->font, $code);
 
     }
 
-    public function writeBackgroundText($textXPosition,$textYPosition,$color)
-    {
-        $backgroundXOffset = $this->configuration->obtainValue('shadow_offset_x');
-        $backgroundYOffset = $this->configuration->obtainValue('shadow_offset_y');
-        $code = $this->configuration->obtainValue('code');
-
-        imagettftext($this->resource, $this->fontSize, $this->angle, $textXPosition + $backgroundXOffset, $textYPosition + $backgroundYOffset, $color, $this->font, $code);
-
-    }
 
     public function generateOutput()
     {

@@ -54,19 +54,7 @@ if( isset($_GET['_CAPTCHA']) ) {
     $image->generateAngle();
     $image->generateFontSize();
     $image->generateTextPosition();
-    if( $configuration->obtainValue('shadow') ){
-        $image->shadowColorAllocate();
-        $image->writeBackgroundText(
-            $image->getTextXPosition(),
-            $image->getTextYPosition(),
-            $image->getShadowColor()
-        );
-    }
-    $image->writeText(
-        $image->getTextXPosition(),
-        $image->getTextYPosition(),
-        $image->getColor()
-    );
+    $image->writeText();
 
     header("Content-type: image/png");
     $image->generateOutput();
