@@ -1,6 +1,6 @@
 <?php
 
-include_once 'FileNotExistsException.php';
+include_once 'exceptions/FileNotExistsException.php';
 
 class Configuration
 {

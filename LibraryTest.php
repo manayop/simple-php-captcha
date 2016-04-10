@@ -1,6 +1,6 @@
 <?php
 
-include_once "LibraryNotExistsException.php";
+include_once "exceptions/LibraryNotExistsException.php";
 
 class LibraryTest
 {
