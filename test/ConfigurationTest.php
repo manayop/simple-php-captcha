@@ -124,5 +124,14 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
         $this->assertContains($randomBackground,$configuration->obtainValue('backgrounds'));
     }
 
+    public function testPickRandomFont()
+    {
+        $configuration = new Configuration();
+
+        $randomFont = $configuration->obtainRandomFont();
+
+        $this->assertContains($randomFont,$configuration->obtainValue('fonts'));
+    }
+
 
 }

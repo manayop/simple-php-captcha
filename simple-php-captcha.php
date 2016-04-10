@@ -69,6 +69,7 @@ if( isset($_GET['_CAPTCHA']) ) {
     unset($_SESSION['_CAPTCHA']);
 
     $background = $configuration->obtainRandomBackground();
+    $font = $configuration->obtainRandomFont();
     $imageProperties = new ImageProperties();
     list($bg_width, $bg_height, $bg_type, $bg_attr) = $imageProperties->getImageSize($background);
 
@@ -77,10 +78,6 @@ if( isset($_GET['_CAPTCHA']) ) {
     $image->colorAllocate($configuration->obtainValue('color'));
     $image->generateAngle($configuration->obtainValue('angle_min'),$configuration->obtainValue('angle_max'));
     $captcha = $image->getResource();
-
-
-    // Select font randomly
-    $font = $captcha_config['fonts'][mt_rand(0, count($captcha_config['fonts']) - 1)];
 
     // Verify font file exists
     if( !file_exists($font) ) throw new Exception('Font file not found: ' . $font);

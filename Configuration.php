@@ -111,4 +111,11 @@ class Configuration
         return $this->config['backgrounds'][mt_rand(0, $count -1)];
 
     }
+
+    public function obtainRandomFont()
+    {
+        $count = count($this->config['fonts']);
+        return $this->config['fonts'][mt_rand(0, $count -1)];
+
+    }
 }
