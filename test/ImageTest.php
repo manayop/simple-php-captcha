@@ -31,6 +31,36 @@ class ImageTest extends PHPUnit_Framework_TestCase
 
     }
 
+    public function testHex2RgbTransform()
+    {
+        $image = new Image();
+
+        $color = $image->hex2rgb('#00F');
+
+        $this->assertEquals($color,['r' => 0, 'g' => 0, 'b' => 255]);
+
+
+    }
+
+    public function testColorAllocate()
+    {
+        $image = new Image();
+        $configuration = new Configuration();
+
+        $background = $configuration->obtainValue('backgrounds')[0];
+        $image->createFromPng($background);
+
+        $color = '#00F';
+        $rgbColor = $image->hex2rgb($color);
+
+        $image->colorAllocate($color);
+        $rgbColorTest = imagecolorsforindex($image->getResource(),$image->getColor());
+
+        $this->assertEquals($rgbColor['r'], $rgbColorTest['red']);
+        $this->assertEquals($rgbColor['g'], $rgbColorTest['green']);
+        $this->assertEquals($rgbColor['b'], $rgbColorTest['blue']);
+    }
+
 
     private function image_compare($image1, $image2)
     {

@@ -74,10 +74,9 @@ if( isset($_GET['_CAPTCHA']) ) {
 
     $image = new Image();
     $image->createFromPng($background);
+    $image->colorAllocate($configuration->obtainValue('color'));
     $captcha = $image->getResource();
 
-    $color = hex2rgb($captcha_config['color']);
-    $color = imagecolorallocate($captcha, $color['r'], $color['g'], $color['b']);
 
     // Determine text angle
     $angle = mt_rand( $captcha_config['angle_min'], $captcha_config['angle_max'] ) * (mt_rand(0, 1) == 1 ? -1 : 1);
@@ -115,7 +114,7 @@ if( isset($_GET['_CAPTCHA']) ) {
     }
 
     // Draw text
-    imagettftext($captcha, $font_size, $angle, $text_pos_x, $text_pos_y, $color, $font, $captcha_config['code']);
+    imagettftext($captcha, $font_size, $angle, $text_pos_x, $text_pos_y, $image->getColor(), $font, $captcha_config['code']);
 
     // Output image
     header("Content-type: image/png");
