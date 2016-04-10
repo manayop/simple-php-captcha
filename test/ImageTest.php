@@ -73,6 +73,18 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $this->assertGreaterThanOrEqual(-10,$angle);
     }
 
+    public function testFontSize()
+    {
+        $image = new Image();
+
+        $image->generateFontSize(0,10);
+
+        $font_size = $image->getFontSize();
+
+        $this->assertGreaterThanOrEqual($font_size,10);
+        $this->assertGreaterThanOrEqual(0,$font_size);
+    }
+
     private function image_compare($image1, $image2)
     {
         $im = $image1;

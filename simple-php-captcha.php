@@ -77,11 +77,10 @@ if( isset($_GET['_CAPTCHA']) ) {
     $image->createFromPng($background);
     $image->colorAllocate($configuration->obtainValue('color'));
     $image->generateAngle($configuration->obtainValue('angle_min'),$configuration->obtainValue('angle_max'));
+    $image->generateFontSize($configuration->obtainValue('min_font_size'),$configuration->obtainValue('max_font_size'));
     $captcha = $image->getResource();
 
-    //Set the font size.
-    $font_size = mt_rand($captcha_config['min_font_size'], $captcha_config['max_font_size']);
-    $text_box_size = imagettfbbox($font_size, $image->getAngle(), $font, $captcha_config['code']);
+    $text_box_size = imagettfbbox($image->getFontSize(), $image->getAngle(), $font, $captcha_config['code']);
 
     // Determine text position
     $box_width = abs($text_box_size[6] - $text_box_size[2]);
@@ -102,11 +101,11 @@ if( isset($_GET['_CAPTCHA']) ) {
     if( $captcha_config['shadow'] ){
         $shadow_color = hex2rgb($captcha_config['shadow_color']);
         $shadow_color = imagecolorallocate($captcha, $shadow_color['r'], $shadow_color['g'], $shadow_color['b']);
-        imagettftext($captcha, $font_size, $image->getAngle(), $text_pos_x + $captcha_config['shadow_offset_x'], $text_pos_y + $captcha_config['shadow_offset_y'], $shadow_color, $font, $captcha_config['code']);
+        imagettftext($captcha, $image->getFontSize(), $image->getAngle(), $text_pos_x + $captcha_config['shadow_offset_x'], $text_pos_y + $captcha_config['shadow_offset_y'], $shadow_color, $font, $captcha_config['code']);
     }
 
     // Draw text
-    imagettftext($captcha, $font_size, $image->getAngle(), $text_pos_x, $text_pos_y, $image->getColor(), $font, $captcha_config['code']);
+    imagettftext($captcha, $image->getFontSize(), $image->getAngle(), $text_pos_x, $text_pos_y, $image->getColor(), $font, $captcha_config['code']);
 
     // Output image
     header("Content-type: image/png");

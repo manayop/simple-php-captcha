@@ -6,6 +6,7 @@ class Image
     private $resource;
     private $color;
     private $angle;
+    private $fontSize;
 
     public function getResource()
     {
@@ -25,6 +26,14 @@ class Image
         return $this->angle;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getFontSize()
+    {
+        return $this->fontSize;
+    }
+
 
 
     public function createFromPng($source)
@@ -41,6 +50,11 @@ class Image
     public function generateAngle($angleMin,$angleMax)
     {
         $this->angle = mt_rand( $angleMin, $angleMax ) * (mt_rand(0, 1) == 1 ? -1 : 1);
+    }
+
+    public function generateFontSize($sizeMin,$sizeMax)
+    {
+        $this->fontSize = mt_rand($sizeMin,$sizeMax);
     }
 
     public function hex2rgb($hex_str, $return_string = false, $separator = ',') {
