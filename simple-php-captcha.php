@@ -66,7 +66,6 @@ if( isset($_GET['_CAPTCHA']) ) {
 
     unset($_SESSION['_CAPTCHA']);
 
-    // Pick random background, get info, and start captcha
     $background = $configuration->obtainRandomBackground();
     list($bg_width, $bg_height, $bg_type, $bg_attr) = getimagesize($background);
 
