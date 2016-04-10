@@ -131,5 +131,16 @@ class Image
 
     }
 
+    public function writeText($textXPosition,$textYPosition,$color,$font,$code)
+    {
+        return imagettftext($this->resource, $this->fontSize, $this->angle, $textXPosition, $textYPosition, $color, $font, $code);
+
+    }
+
+    public function generateOutput()
+    {
+        return imagepng($this->resource);
+    }
+
 
 }

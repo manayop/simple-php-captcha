@@ -36,27 +36,6 @@ function simple_php_captcha($config = array()) {
 
 }
 
-
-if( !function_exists('hex2rgb') ) {
-    function hex2rgb($hex_str, $return_string = false, $separator = ',') {
-        $hex_str = preg_replace("/[^0-9A-Fa-f]/", '', $hex_str); // Gets a proper hex string
-        $rgb_array = array();
-        if( strlen($hex_str) == 6 ) {
-            $color_val = hexdec($hex_str);
-            $rgb_array['r'] = 0xFF & ($color_val >> 0x10);
-            $rgb_array['g'] = 0xFF & ($color_val >> 0x8);
-            $rgb_array['b'] = 0xFF & $color_val;
-        } elseif( strlen($hex_str) == 3 ) {
-            $rgb_array['r'] = hexdec(str_repeat(substr($hex_str, 0, 1), 2));
-            $rgb_array['g'] = hexdec(str_repeat(substr($hex_str, 1, 1), 2));
-            $rgb_array['b'] = hexdec(str_repeat(substr($hex_str, 2, 1), 2));
-        } else {
-            return false;
-        }
-        return $return_string ? implode($separator, $rgb_array) : $rgb_array;
-    }
-}
-
 // Draw the image
 if( isset($_GET['_CAPTCHA']) ) {
 
@@ -79,20 +58,26 @@ if( isset($_GET['_CAPTCHA']) ) {
     $image->generateAngle($configuration->obtainValue('angle_min'),$configuration->obtainValue('angle_max'));
     $image->generateFontSize($configuration->obtainValue('min_font_size'),$configuration->obtainValue('max_font_size'));
     $image->generateTextPosition($bg_width,$bg_height,$font,$configuration->obtainValue('code'));
-    $captcha = $image->getResource();
-
-
-    // Draw shadow
     if( $configuration->obtainValue('shadow') ){
         $image->shadowColorAllocate($configuration->obtainValue('shadow_color'));
-        imagettftext($captcha, $image->getFontSize(), $image->getAngle(), $image->getTextXPosition() + $configuration->obtainValue('shadow_offset_x'), $image->getTextYPosition() + $configuration->obtainValue('shadow_offset_y'), $image->getShadowColor(), $font, $configuration->obtainValue('code'));
+        $image->writeText(
+            $image->getTextXPosition() + $configuration->obtainValue('shadow_offset_x'),
+            $image->getTextYPosition() + $configuration->obtainValue('shadow_offset_y'),
+            $image->getShadowColor(),
+            $font,
+            $configuration->obtainValue('code')
+        );
     }
+    $image->writeText(
+        $image->getTextXPosition(),
+        $image->getTextYPosition(),
+        $image->getColor(),
+        $font,
+        $configuration->obtainValue('code')
+    );
 
-    // Draw text
-    imagettftext($captcha, $image->getFontSize(), $image->getAngle(), $image->getTextXPosition(), $image->getTextYPosition(), $image->getColor(), $font, $captcha_config['code']);
-
-    // Output image
     header("Content-type: image/png");
-    imagepng($captcha);
+    $image->generateOutput();
+
 
 }
