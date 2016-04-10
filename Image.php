@@ -12,13 +12,16 @@ class Image
     private $textXPosition;
     private $textYPosition;
 
+    private $imageWidth;
+    private $imageHeight;
+
     public function __construct($configuration)
     {
         if (!$configuration instanceof Configuration){
             throw new InvalidArgumentException();
         }
-
         $this->configuration = $configuration;
+
     }
 
     public function getResource()
@@ -74,8 +77,13 @@ class Image
 
 
 
-    public function createFromPng($source)
+    public function create()
     {
+        $source = $this->configuration->obtainRandomBackground();
+
+        $imageProperties = new ImageProperties();
+        list($this->imageWidth, $this->imageHeight) = $imageProperties->getImageSize($source);
+
         $this->resource = imagecreatefrompng($source);
     }
 
@@ -106,7 +114,7 @@ class Image
         $this->fontSize = mt_rand($sizeMin,$sizeMax);
     }
 
-    public function generateTextPosition($containerWidth,$containerHeight,$font)
+    public function generateTextPosition($font)
     {
         $code = $this->configuration->obtainValue('code');
         $text_box_size = imagettfbbox($this->fontSize, $this->angle, $font, $code);
@@ -114,11 +122,11 @@ class Image
         $box_width = abs($text_box_size[6] - $text_box_size[2]);
         $box_height = abs($text_box_size[5] - $text_box_size[1]);
         $text_pos_x_min = 0;
-        $text_pos_x_max = ($containerWidth) - ($box_width);
+        $text_pos_x_max = ($this->imageWidth) - ($box_width);
         $this->textXPosition = mt_rand($text_pos_x_min, $text_pos_x_max);
 
         $text_pos_y_min = $box_height;
-        $text_pos_y_max = ($containerHeight) - ($box_height / 2);
+        $text_pos_y_max = ($this->imageHeight) - ($box_height / 2);
         if ($text_pos_y_min > $text_pos_y_max) {
             $temp_text_pos_y = $text_pos_y_min;
             $text_pos_y_min = $text_pos_y_max;

@@ -47,17 +47,14 @@ if( isset($_GET['_CAPTCHA']) ) {
 
     unset($_SESSION['_CAPTCHA']);
 
-    $background = $configuration->obtainRandomBackground();
     $font = $configuration->obtainRandomFont();
-    $imageProperties = new ImageProperties();
-    list($bg_width, $bg_height, $bg_type, $bg_attr) = $imageProperties->getImageSize($background);
 
     $image = new Image($configuration);
-    $image->createFromPng($background);
+    $image->create();
     $image->colorAllocate();
     $image->generateAngle();
     $image->generateFontSize();
-    $image->generateTextPosition($bg_width,$bg_height,$font);
+    $image->generateTextPosition($font);
     if( $configuration->obtainValue('shadow') ){
         $image->shadowColorAllocate();
         $image->writeBackgroundText(

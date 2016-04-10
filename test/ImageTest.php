@@ -20,13 +20,15 @@ class ImageTest extends PHPUnit_Framework_TestCase
 
     }
 
-    public function testCreateFromPng()
+    public function testCreation()
     {
         $configuration = new Configuration();
-        $image = new Image($configuration);
-
         $background = $configuration->obtainValue('backgrounds')[0];
-        $image->createFromPng($background);
+
+        $oneBackgroundConfiguration = new Configuration(array('backgrounds' => array($background)));
+        $image = new Image($oneBackgroundConfiguration);
+
+        $image->create($background);
 
         $testImage = imagecreatefrompng($background);
 
@@ -34,7 +36,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
 
         $otherImage = new Image($configuration);
         $otherBackground = $configuration->obtainValue('backgrounds')[1];
-        $otherImage->createFromPng($otherBackground);
+        $otherImage->create($otherBackground);
 
         $this->assertFalse($this->image_compare($testImage, $otherImage->getResource()));
 
@@ -58,7 +60,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $image = new Image($configuration);
 
         $background = $configuration->obtainValue('backgrounds')[0];
-        $image->createFromPng($background);
+        $image->create($background);
 
         $rgbColor = $image->hex2rgb($color);
 
@@ -73,11 +75,11 @@ class ImageTest extends PHPUnit_Framework_TestCase
     public function testShadowColorAllocate()
     {
         $color = '#00F';
-        $configuration = new Configuration(array('color' => $color));
+        $configuration = new Configuration(array('shadow_color' => $color));
         $image = new Image($configuration);
 
         $background = $configuration->obtainValue('backgrounds')[0];
-        $image->createFromPng($background);
+        $image->create($background);
 
         $rgbColor = $image->hex2rgb($color);
 
@@ -116,17 +118,24 @@ class ImageTest extends PHPUnit_Framework_TestCase
     public function testTextPosition()
     {
         $code = "1234";
-        $configuration = new Configuration(array('code' => $code));
-        $image = new Image($configuration);
-
+        $configuration = new Configuration(array());
         $background = $configuration->obtainValue('backgrounds')[0];
         $font = $configuration->obtainValue('fonts')[0];
 
-        $image->createFromPng($background);
+        $oneBackgroundConfiguration = new Configuration(
+            array(
+                'backgrounds' => array($background),
+                'code' => $code
+            )
+        );
+        $image = new Image($oneBackgroundConfiguration);
+
+
+        $image->create();
         $imageProperties = new ImageProperties();
         list($bg_width, $bg_height) = $imageProperties->getImageSize($background);
 
-        $image->generateTextPosition($bg_width,$bg_height,$font);
+        $image->generateTextPosition($font);
         $x = $image->getTextXPosition();
         $y = $image->getTextYPosition();
 
