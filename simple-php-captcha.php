@@ -83,10 +83,9 @@ if( isset($_GET['_CAPTCHA']) ) {
 
 
     // Draw shadow
-    if( $captcha_config['shadow'] ){
-        $shadow_color = hex2rgb($captcha_config['shadow_color']);
-        $shadow_color = imagecolorallocate($captcha, $shadow_color['r'], $shadow_color['g'], $shadow_color['b']);
-        imagettftext($captcha, $image->getFontSize(), $image->getAngle(), $image->getTextXPosition() + $captcha_config['shadow_offset_x'], $image->getTextYPosition() + $captcha_config['shadow_offset_y'], $shadow_color, $font, $captcha_config['code']);
+    if( $configuration->obtainValue('shadow') ){
+        $image->shadowColorAllocate($configuration->obtainValue('shadow_color'));
+        imagettftext($captcha, $image->getFontSize(), $image->getAngle(), $image->getTextXPosition() + $configuration->obtainValue('shadow_offset_x'), $image->getTextYPosition() + $configuration->obtainValue('shadow_offset_y'), $image->getShadowColor(), $font, $configuration->obtainValue('code'));
     }
 
     // Draw text

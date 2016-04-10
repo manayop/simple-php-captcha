@@ -61,6 +61,26 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($rgbColor['b'], $rgbColorTest['blue']);
     }
 
+    public function testShadowColorAllocate()
+    {
+        $image = new Image();
+        $configuration = new Configuration();
+
+        $background = $configuration->obtainValue('backgrounds')[0];
+        $image->createFromPng($background);
+
+        $color = '#00F';
+        $rgbColor = $image->hex2rgb($color);
+
+        $image->shadowColorAllocate($color);
+        $rgbColorTest = imagecolorsforindex($image->getResource(),$image->getShadowColor());
+
+        $this->assertEquals($rgbColor['r'], $rgbColorTest['red']);
+        $this->assertEquals($rgbColor['g'], $rgbColorTest['green']);
+        $this->assertEquals($rgbColor['b'], $rgbColorTest['blue']);
+    }
+
+
     public function testAngle()
     {
         $image = new Image();

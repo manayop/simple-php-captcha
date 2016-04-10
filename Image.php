@@ -5,6 +5,7 @@ class Image
 {
     private $resource;
     private $color;
+    private $shadowColor;
     private $angle;
     private $fontSize;
     private $textXPosition;
@@ -19,6 +20,15 @@ class Image
     {
         return $this->color;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getShadowColor()
+    {
+        return $this->shadowColor;
+    }
+
 
     /**
      * @return mixed
@@ -63,6 +73,12 @@ class Image
     {
         $rgbColor = $this->hex2rgb($color);
         $this->color = imagecolorallocate($this->resource,$rgbColor['r'],$rgbColor['g'],$rgbColor['b']);
+    }
+
+    public function shadowColorAllocate($color)
+    {
+        $rgbColor = $this->hex2rgb($color);
+        $this->shadowColor = imagecolorallocate($this->resource,$rgbColor['r'],$rgbColor['g'],$rgbColor['b']);
     }
 
     public function generateAngle($angleMin,$angleMax)
