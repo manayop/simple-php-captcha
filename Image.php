@@ -5,6 +5,7 @@ class Image
 {
     private $resource;
     private $color;
+    private $angle;
 
     public function getResource()
     {
@@ -16,6 +17,16 @@ class Image
         return $this->color;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getAngle()
+    {
+        return $this->angle;
+    }
+
+
+
     public function createFromPng($source)
     {
         $this->resource = imagecreatefrompng($source);
@@ -25,6 +36,11 @@ class Image
     {
         $rgbColor = $this->hex2rgb($color);
         $this->color = imagecolorallocate($this->resource,$rgbColor['r'],$rgbColor['g'],$rgbColor['b']);
+    }
+
+    public function generateAngle($angleMin,$angleMax)
+    {
+        $this->angle = mt_rand( $angleMin, $angleMax ) * (mt_rand(0, 1) == 1 ? -1 : 1);
     }
 
     public function hex2rgb($hex_str, $return_string = false, $separator = ',') {

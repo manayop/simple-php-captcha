@@ -61,6 +61,17 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($rgbColor['b'], $rgbColorTest['blue']);
     }
 
+    public function testAngle()
+    {
+        $image = new Image();
+
+        $image->generateAngle(0,10);
+
+        $angle = $image->getAngle();
+
+        $this->assertGreaterThanOrEqual($angle,10);
+        $this->assertGreaterThanOrEqual(-10,$angle);
+    }
 
     private function image_compare($image1, $image2)
     {
