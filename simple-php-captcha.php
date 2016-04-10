@@ -7,6 +7,7 @@ include_once 'UbicationHandler.php';
 include_once 'ImageProperties.php';
 include_once 'Image.php';
 include_once 'LibraryTest.php';
+include_once 'NativeSession.php';
 
 function simple_php_captcha($config = array()) {
 
@@ -18,7 +19,9 @@ function simple_php_captcha($config = array()) {
     $captchaGenerator = new CaptchaGenerator($configuration);
     $captchaGenerator->generateCode();
     $captcha_config = $captchaGenerator->getConfiguration()->asHash();
-    $_SESSION['_CAPTCHA']['config'] = serialize($captcha_config);
+
+    $session = new NativeSession();
+    $session->serializedSetWithPrefix('_CAPTCHA','config',$captcha_config);
 
 
     $ubicationHandler = new UbicationHandler();
@@ -35,12 +38,11 @@ function simple_php_captcha($config = array()) {
 
 }
 
-// Draw the image
 if( isset($_GET['_CAPTCHA']) ) {
 
-    session_start();
-
-    $captcha_config = unserialize($_SESSION['_CAPTCHA']['config']);
+    $session = new NativeSession();
+    $session->start();
+    $captcha_config = $session->serializedGetWithPrefix('_CAPTCHA','config');
     if( !$captcha_config ) exit();
     $configuration = new Configuration($captcha_config);
 
