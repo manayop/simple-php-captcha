@@ -6,13 +6,12 @@ include_once 'CaptchaGenerator.php';
 include_once 'UbicationHandler.php';
 include_once 'ImageProperties.php';
 include_once 'Image.php';
+include_once 'LibraryTest.php';
 
 function simple_php_captcha($config = array()) {
 
-    // Check for GD library
-    if( !function_exists('gd_info') ) {
-        throw new Exception('Required GD library is missing');
-    }
+    $libraryTest = new LibraryTest();
+    $libraryTest->functionTest('gd_info');
 
     $configuration = new Configuration($config);
 
