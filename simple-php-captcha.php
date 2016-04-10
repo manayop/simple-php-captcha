@@ -4,6 +4,7 @@
 include_once 'Configuration.php';
 include_once 'CaptchaGenerator.php';
 include_once 'UbicationHandler.php';
+include_once 'ImageProperties.php';
 
 function simple_php_captcha($config = array()) {
 
@@ -67,7 +68,8 @@ if( isset($_GET['_CAPTCHA']) ) {
     unset($_SESSION['_CAPTCHA']);
 
     $background = $configuration->obtainRandomBackground();
-    list($bg_width, $bg_height, $bg_type, $bg_attr) = getimagesize($background);
+    $imageProperties = new ImageProperties();
+    list($bg_width, $bg_height, $bg_type, $bg_attr) = $imageProperties->getImageSize($background);
 
     $captcha = imagecreatefrompng($background);
 
