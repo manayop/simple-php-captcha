@@ -52,28 +52,26 @@ if( isset($_GET['_CAPTCHA']) ) {
     $imageProperties = new ImageProperties();
     list($bg_width, $bg_height, $bg_type, $bg_attr) = $imageProperties->getImageSize($background);
 
-    $image = new Image();
+    $image = new Image($configuration);
     $image->createFromPng($background);
-    $image->colorAllocate($configuration->obtainValue('color'));
-    $image->generateAngle($configuration->obtainValue('angle_min'),$configuration->obtainValue('angle_max'));
-    $image->generateFontSize($configuration->obtainValue('min_font_size'),$configuration->obtainValue('max_font_size'));
-    $image->generateTextPosition($bg_width,$bg_height,$font,$configuration->obtainValue('code'));
+    $image->colorAllocate();
+    $image->generateAngle();
+    $image->generateFontSize();
+    $image->generateTextPosition($bg_width,$bg_height,$font);
     if( $configuration->obtainValue('shadow') ){
-        $image->shadowColorAllocate($configuration->obtainValue('shadow_color'));
-        $image->writeText(
-            $image->getTextXPosition() + $configuration->obtainValue('shadow_offset_x'),
-            $image->getTextYPosition() + $configuration->obtainValue('shadow_offset_y'),
+        $image->shadowColorAllocate();
+        $image->writeBackgroundText(
+            $image->getTextXPosition(),
+            $image->getTextYPosition(),
             $image->getShadowColor(),
-            $font,
-            $configuration->obtainValue('code')
+            $font
         );
     }
     $image->writeText(
         $image->getTextXPosition(),
         $image->getTextYPosition(),
         $image->getColor(),
-        $font,
-        $configuration->obtainValue('code')
+        $font
     );
 
     header("Content-type: image/png");

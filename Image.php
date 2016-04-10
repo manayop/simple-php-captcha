@@ -3,6 +3,7 @@
 
 class Image
 {
+    private $configuration;
     private $resource;
     private $color;
     private $shadowColor;
@@ -10,6 +11,15 @@ class Image
     private $fontSize;
     private $textXPosition;
     private $textYPosition;
+
+    public function __construct($configuration)
+    {
+        if (!$configuration instanceof Configuration){
+            throw new InvalidArgumentException();
+        }
+
+        $this->configuration = $configuration;
+    }
 
     public function getResource()
     {
@@ -69,30 +79,36 @@ class Image
         $this->resource = imagecreatefrompng($source);
     }
 
-    public function colorAllocate($color)
+    public function colorAllocate()
     {
-        $rgbColor = $this->hex2rgb($color);
+        $rgbColor = $this->hex2rgb($this->configuration->obtainValue('color'));
         $this->color = imagecolorallocate($this->resource,$rgbColor['r'],$rgbColor['g'],$rgbColor['b']);
     }
 
-    public function shadowColorAllocate($color)
+    public function shadowColorAllocate()
     {
-        $rgbColor = $this->hex2rgb($color);
+        $rgbColor = $this->hex2rgb($this->configuration->obtainValue('shadow_color'));
         $this->shadowColor = imagecolorallocate($this->resource,$rgbColor['r'],$rgbColor['g'],$rgbColor['b']);
     }
 
-    public function generateAngle($angleMin,$angleMax)
+    public function generateAngle()
     {
+        $angleMin = $this->configuration->obtainValue('angle_min');
+        $angleMax = $this->configuration->obtainValue('angle_max');
         $this->angle = mt_rand( $angleMin, $angleMax ) * (mt_rand(0, 1) == 1 ? -1 : 1);
     }
 
-    public function generateFontSize($sizeMin,$sizeMax)
+    public function generateFontSize()
     {
+        $sizeMin = $this->configuration->obtainValue('min_font_size');
+        $sizeMax = $this->configuration->obtainValue('max_font_size');
+
         $this->fontSize = mt_rand($sizeMin,$sizeMax);
     }
 
-    public function generateTextPosition($containerWidth,$containerHeight,$font,$code)
+    public function generateTextPosition($containerWidth,$containerHeight,$font)
     {
+        $code = $this->configuration->obtainValue('code');
         $text_box_size = imagettfbbox($this->fontSize, $this->angle, $font, $code);
 
         $box_width = abs($text_box_size[6] - $text_box_size[2]);
@@ -131,15 +147,26 @@ class Image
 
     }
 
-    public function writeText($textXPosition,$textYPosition,$color,$font,$code)
+    public function writeText($textXPosition,$textYPosition,$color,$font)
     {
-        return imagettftext($this->resource, $this->fontSize, $this->angle, $textXPosition, $textYPosition, $color, $font, $code);
+        $code = $this->configuration->obtainValue('code');
+        imagettftext($this->resource, $this->fontSize, $this->angle, $textXPosition, $textYPosition, $color, $font, $code);
+
+    }
+
+    public function writeBackgroundText($textXPosition,$textYPosition,$color,$font)
+    {
+        $backgroundXOffset = $this->configuration->obtainValue('shadow_offset_x');
+        $backgroundYOffset = $this->configuration->obtainValue('shadow_offset_y');
+        $code = $this->configuration->obtainValue('code');
+
+        imagettftext($this->resource, $this->fontSize, $this->angle, $textXPosition + $backgroundXOffset, $textYPosition + $backgroundYOffset, $color, $font, $code);
 
     }
 
     public function generateOutput()
     {
-        return imagepng($this->resource);
+        imagepng($this->resource);
     }
 
 
