@@ -18,11 +18,13 @@ class Image
 
     public function __construct($configuration)
     {
-        if (!$configuration instanceof Configuration){
-            throw new InvalidArgumentException();
-        }
+        $this->testConfiguration($configuration);
         $this->configuration = $configuration;
+    }
 
+    private function testConfiguration($configuration)
+    {
+        if (!$configuration instanceof Configuration) throw new InvalidArgumentException();
     }
 
     public function getResource()
@@ -88,6 +90,15 @@ class Image
         $this->font = $this->configuration->obtainRandomFont();
 
         $this->resource = imagecreatefrompng($source);
+    }
+
+    public function draw()
+    {
+        $this->colorAllocate();
+        $this->generateAngle();
+        $this->generateFontSize();
+        $this->generateTextPosition();
+        $this->writeText();
     }
 
     public function colorAllocate()

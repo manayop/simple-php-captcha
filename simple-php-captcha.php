@@ -50,11 +50,7 @@ if( isset($_GET['_CAPTCHA']) ) {
 
     $image = new Image($configuration);
     $image->create();
-    $image->colorAllocate();
-    $image->generateAngle();
-    $image->generateFontSize();
-    $image->generateTextPosition();
-    $image->writeText();
+    $image->draw();
 
     header("Content-type: image/png");
     $image->generateOutput();
