@@ -7,6 +7,8 @@ class Image
     private $color;
     private $angle;
     private $fontSize;
+    private $textXPosition;
+    private $textYPosition;
 
     public function getResource()
     {
@@ -34,6 +36,22 @@ class Image
         return $this->fontSize;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getTextXPosition()
+    {
+        return $this->textXPosition;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTextYPosition()
+    {
+        return $this->textYPosition;
+    }
+
 
 
     public function createFromPng($source)
@@ -55,6 +73,26 @@ class Image
     public function generateFontSize($sizeMin,$sizeMax)
     {
         $this->fontSize = mt_rand($sizeMin,$sizeMax);
+    }
+
+    public function generateTextPosition($containerWidth,$containerHeight,$font,$code)
+    {
+        $text_box_size = imagettfbbox($this->fontSize, $this->angle, $font, $code);
+
+        $box_width = abs($text_box_size[6] - $text_box_size[2]);
+        $box_height = abs($text_box_size[5] - $text_box_size[1]);
+        $text_pos_x_min = 0;
+        $text_pos_x_max = ($containerWidth) - ($box_width);
+        $this->textXPosition = mt_rand($text_pos_x_min, $text_pos_x_max);
+
+        $text_pos_y_min = $box_height;
+        $text_pos_y_max = ($containerHeight) - ($box_height / 2);
+        if ($text_pos_y_min > $text_pos_y_max) {
+            $temp_text_pos_y = $text_pos_y_min;
+            $text_pos_y_min = $text_pos_y_max;
+            $text_pos_y_max = $temp_text_pos_y;
+        }
+        $this->textYPosition = mt_rand($text_pos_y_min, $text_pos_y_max);
     }
 
     public function hex2rgb($hex_str, $return_string = false, $separator = ',') {

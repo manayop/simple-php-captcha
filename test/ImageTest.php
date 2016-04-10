@@ -85,6 +85,28 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $this->assertGreaterThanOrEqual(0,$font_size);
     }
 
+    public function testTextPosition()
+    {
+        $image = new Image();
+        $configuration = new Configuration();
+
+        $background = $configuration->obtainValue('backgrounds')[0];
+        $font = $configuration->obtainValue('fonts')[0];
+        $code = "1234";
+
+        $image->createFromPng($background);
+        $imageProperties = new ImageProperties();
+        list($bg_width, $bg_height) = $imageProperties->getImageSize($background);
+
+        $image->generateTextPosition($bg_width,$bg_height,$font,$code);
+        $x = $image->getTextXPosition();
+        $y = $image->getTextYPosition();
+
+        $this->assertGreaterThanOrEqual($x,$bg_width);
+        $this->assertGreaterThanOrEqual($y,$bg_height);
+
+    }
+
     private function image_compare($image1, $image2)
     {
         $im = $image1;

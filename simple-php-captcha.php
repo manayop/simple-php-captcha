@@ -78,34 +78,19 @@ if( isset($_GET['_CAPTCHA']) ) {
     $image->colorAllocate($configuration->obtainValue('color'));
     $image->generateAngle($configuration->obtainValue('angle_min'),$configuration->obtainValue('angle_max'));
     $image->generateFontSize($configuration->obtainValue('min_font_size'),$configuration->obtainValue('max_font_size'));
+    $image->generateTextPosition($bg_width,$bg_height,$font,$configuration->obtainValue('code'));
     $captcha = $image->getResource();
 
-    $text_box_size = imagettfbbox($image->getFontSize(), $image->getAngle(), $font, $captcha_config['code']);
-
-    // Determine text position
-    $box_width = abs($text_box_size[6] - $text_box_size[2]);
-    $box_height = abs($text_box_size[5] - $text_box_size[1]);
-    $text_pos_x_min = 0;
-    $text_pos_x_max = ($bg_width) - ($box_width);
-    $text_pos_x = mt_rand($text_pos_x_min, $text_pos_x_max);
-    $text_pos_y_min = $box_height;
-    $text_pos_y_max = ($bg_height) - ($box_height / 2);
-    if ($text_pos_y_min > $text_pos_y_max) {
-        $temp_text_pos_y = $text_pos_y_min;
-        $text_pos_y_min = $text_pos_y_max;
-        $text_pos_y_max = $temp_text_pos_y;
-    }
-    $text_pos_y = mt_rand($text_pos_y_min, $text_pos_y_max);
 
     // Draw shadow
     if( $captcha_config['shadow'] ){
         $shadow_color = hex2rgb($captcha_config['shadow_color']);
         $shadow_color = imagecolorallocate($captcha, $shadow_color['r'], $shadow_color['g'], $shadow_color['b']);
-        imagettftext($captcha, $image->getFontSize(), $image->getAngle(), $text_pos_x + $captcha_config['shadow_offset_x'], $text_pos_y + $captcha_config['shadow_offset_y'], $shadow_color, $font, $captcha_config['code']);
+        imagettftext($captcha, $image->getFontSize(), $image->getAngle(), $image->getTextXPosition() + $captcha_config['shadow_offset_x'], $image->getTextYPosition() + $captcha_config['shadow_offset_y'], $shadow_color, $font, $captcha_config['code']);
     }
 
     // Draw text
-    imagettftext($captcha, $image->getFontSize(), $image->getAngle(), $text_pos_x, $text_pos_y, $image->getColor(), $font, $captcha_config['code']);
+    imagettftext($captcha, $image->getFontSize(), $image->getAngle(), $image->getTextXPosition(), $image->getTextYPosition(), $image->getColor(), $font, $captcha_config['code']);
 
     // Output image
     header("Content-type: image/png");
