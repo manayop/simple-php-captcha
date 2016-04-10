@@ -5,6 +5,7 @@ include_once 'Configuration.php';
 include_once 'CaptchaGenerator.php';
 include_once 'UbicationHandler.php';
 include_once 'ImageProperties.php';
+include_once 'Image.php';
 
 function simple_php_captcha($config = array()) {
 
@@ -71,7 +72,9 @@ if( isset($_GET['_CAPTCHA']) ) {
     $imageProperties = new ImageProperties();
     list($bg_width, $bg_height, $bg_type, $bg_attr) = $imageProperties->getImageSize($background);
 
-    $captcha = imagecreatefrompng($background);
+    $image = new Image();
+    $image->createFromPng($background);
+    $captcha = $image->getResource();
 
     $color = hex2rgb($captcha_config['color']);
     $color = imagecolorallocate($captcha, $color['r'], $color['g'], $color['b']);
