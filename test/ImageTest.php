@@ -28,17 +28,12 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $oneBackgroundConfiguration = new Configuration(array('backgrounds' => array($background)));
         $image = new Image($oneBackgroundConfiguration);
 
-        $image->create($background);
+        $image->create();
 
         $testImage = imagecreatefrompng($background);
 
         $this->assertTrue($this->image_compare($testImage, $image->getResource()));
 
-        $otherImage = new Image($configuration);
-        $otherBackground = $configuration->obtainValue('backgrounds')[1];
-        $otherImage->create($otherBackground);
-
-        $this->assertFalse($this->image_compare($testImage, $otherImage->getResource()));
 
     }
 
@@ -59,8 +54,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $configuration = new Configuration(array('color' => $color));
         $image = new Image($configuration);
 
-        $background = $configuration->obtainValue('backgrounds')[0];
-        $image->create($background);
+        $image->create();
 
         $rgbColor = $image->hex2rgb($color);
 
@@ -78,8 +72,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $configuration = new Configuration(array('shadow_color' => $color));
         $image = new Image($configuration);
 
-        $background = $configuration->obtainValue('backgrounds')[0];
-        $image->create($background);
+        $image->create();
 
         $rgbColor = $image->hex2rgb($color);
 

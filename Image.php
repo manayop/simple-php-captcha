@@ -37,42 +37,27 @@ class Image
         return $this->color;
     }
 
-    /**
-     * @return mixed
-     */
     public function getShadowColor()
     {
         return $this->shadowColor;
     }
 
 
-    /**
-     * @return mixed
-     */
     public function getAngle()
     {
         return $this->angle;
     }
 
-    /**
-     * @return mixed
-     */
     public function getFontSize()
     {
         return $this->fontSize;
     }
 
-    /**
-     * @return mixed
-     */
     public function getTextXPosition()
     {
         return $this->textXPosition;
     }
 
-    /**
-     * @return mixed
-     */
     public function getTextYPosition()
     {
         return $this->textYPosition;
