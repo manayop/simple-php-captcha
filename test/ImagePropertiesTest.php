@@ -3,7 +3,7 @@
 include_once "ImageProperties.php";
 include_once "Configuration.php";
 
-class ImageTest extends PHPUnit_Framework_TestCase
+class ImagePropertiesTest extends PHPUnit_Framework_TestCase
 {
     public function testInstantiation()
     {
